@@ -39,7 +39,7 @@ public:
   /*
    * Sending commands to serial
    */
-  virtual void sendSerial(const uint8_t speed_cmd) const;
+  virtual void sendSerial(const std::string speed_cmd) const;
 
 private:
   // ROS members
@@ -55,7 +55,7 @@ private:
 
   // Static members for serial com
   static constexpr uint8_t N_BYTES_ = 2U;
-  static constexpr uint8_t CMD_BYTE_ = 0x83U;
+  static constexpr uint8_t CMD_BYTE_ = 0x53U;
   static constexpr speed_t COM_SPEED_ = B9600;
 
 

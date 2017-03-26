@@ -1,7 +1,7 @@
 <launch>
 
 <arg name="debug"                         default="true"/>
-<arg name="com_port"                      default="/dev/tty0"/>
+<arg name="com_port"                      default="/dev/ttyACM0"/>
 <arg name="twist_topic_in"                default="spinner_twist_vel"/>
 
 <node pkg="spinner_serial" name="spinner_serial_node" type="spinner_serial_node" output="screen" >

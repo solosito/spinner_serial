@@ -71,7 +71,7 @@ void SpinnerSerial::velCallback(const geometry_msgs::Twist::ConstPtr& twistMsg) 
 
   ROS_DEBUG("Velocity command received = %u\n", vel_cmd);
 
-  sendSerial(vel_cmd);
+  sendSerial(std::to_string(vel_cmd));
 }
 
 void SpinnerSerial::launch() const
@@ -120,21 +120,20 @@ bool SpinnerSerial::setUpSerialCom()
 
 }
 
-void SpinnerSerial::sendSerial(const uint8_t speed_cmd) const
+void SpinnerSerial::sendSerial(const std::string speed_cmd) const
 {
-  ROS_DEBUG("Sending speed command = %u\n", speed_cmd);
+  ROS_DEBUG_STREAM("Sending speed command = " << speed_cmd << "\n");
 
-  const uint8_t datastream[N_BYTES_] = {CMD_BYTE_, speed_cmd};
+  const std::string datastream = (char)CMD_BYTE_ + speed_cmd;
 
-  const ssize_t sentBytes = write(fd_, &datastream, N_BYTES_);
+  ROS_DEBUG_STREAM("DataStream = " << datastream << "\n" << datastream.length());
+
+  const ssize_t sentBytes = write(fd_, datastream.c_str(), datastream.length());
+  // const ssize_t sentBytes = write(fd_, speed_cmd.c_str(), (speed_cmd.c_str()).length;
 
   if( sentBytes == -1 )
   {
     ROS_ERROR_STREAM ("sendSerial unsuccesful: " << strerror(errno));
-  }
-  else if ( sentBytes != static_cast<int>(N_BYTES_))
-  {
-    ROS_ERROR_STREAM ("sendSerial unsuccesful. Expecting " << N_BYTES_ << " B. Sending: " <<  sentBytes << " B");
   }
 
 }
