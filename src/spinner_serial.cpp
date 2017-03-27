@@ -66,7 +66,7 @@ void SpinnerSerial::velCallback(const geometry_msgs::Twist::ConstPtr& msg) const
 {
   static geometry_msgs::Twist twist_msg = *msg;
 
-  const uint8_t vel_cmd = twist_msg->angular.z;
+  const uint8_t vel_cmd = twist_msg.angular.z;
 
   ROS_DEBUG("Velocity command received = %u\n", vel_cmd);
 
