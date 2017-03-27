@@ -7,8 +7,6 @@ SpinnerSerial::SpinnerSerial(ros::NodeHandle& nh) :
   // ROS private node
   ros::NodeHandle nh_private("~");
 
-
-
   // Debug mode
   bool debug;
   nh_private.param<bool>("debug", debug, false);
@@ -20,7 +18,6 @@ SpinnerSerial::SpinnerSerial(ros::NodeHandle& nh) :
       ros::console::notifyLoggerLevelsChanged();
     }
   }
-
 
 
   // Get COM port parameter
@@ -60,14 +57,16 @@ SpinnerSerial::SpinnerSerial(ros::NodeHandle& nh) :
 
 
   // Twist topic subscriber
-  sub_velMsg = nh_.subscribe(twist_topic_name, 5, &SpinnerSerial::velCallback, this);
+  sub_velMsg_ = nh_.subscribe(twist_topic_name, 5, &SpinnerSerial::velCallback, this);
 
 
 }
 
-void SpinnerSerial::velCallback(const geometry_msgs::Twist::ConstPtr& twistMsg) const
+void SpinnerSerial::velCallback(const geometry_msgs::Twist::ConstPtr& msg) const
 {
-  const uint8_t vel_cmd = twistMsg->angular.z;
+  static geometry_msgs::Twist twist_msg = *msg;
+
+  const uint8_t vel_cmd = twist_msg->angular.z;
 
   ROS_DEBUG("Velocity command received = %u\n", vel_cmd);
 
