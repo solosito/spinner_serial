@@ -3,9 +3,11 @@
 
 SpinnerSerial::SpinnerSerial(ros::NodeHandle& nh) :
   nh_(nh)
+//  ,last_twist_(*new geometry_msgs::Twist())
 {
   // ROS private node
   ros::NodeHandle nh_private("~");
+
 
   // Debug mode
   bool debug;
@@ -62,15 +64,19 @@ SpinnerSerial::SpinnerSerial(ros::NodeHandle& nh) :
 
 }
 
-void SpinnerSerial::velCallback(const geometry_msgs::Twist::ConstPtr& msg) const
+void SpinnerSerial::velCallback(const geometry_msgs::Twist::ConstPtr& msg)
 {
-  static geometry_msgs::Twist twist_msg = *msg;
 
-  const uint8_t vel_cmd = twist_msg.angular.z;
+  const uint8_t vel_cmd = msg->angular.z;
 
-  ROS_DEBUG("Velocity command received = %u\n", vel_cmd);
+  if(vel_cmd != last_vel_cmd_){
+    ROS_DEBUG("Velocity command received = %u\n", vel_cmd);
 
-  sendSerial(std::to_string(vel_cmd));
+    sendSerial(std::to_string(vel_cmd));
+  }
+
+  last_vel_cmd_ = vel_cmd;
+
 }
 
 void SpinnerSerial::launch() const

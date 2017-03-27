@@ -24,7 +24,7 @@ public:
   /*
    * Callback for twist msgs
    */
-  void velCallback(const geometry_msgs::Twist::ConstPtr& msg) const;
+  void velCallback(const geometry_msgs::Twist::ConstPtr& msg);
 
   /*
    * Main function for checking and callbacks subscribing. Closes port when finished
@@ -46,8 +46,8 @@ private:
   ros::NodeHandle& nh_;
   ros::Subscriber sub_velMsg_;
 
-  // Storage for last Twist
-  static geometry_msgs::Twist last_twist_;
+  // Storage for last vel_cmd
+  uint8_t last_vel_cmd_;
 
   // COM members
   int fd_;
